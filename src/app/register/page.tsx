@@ -1,4 +1,5 @@
 "use client";
+import { registrationAction } from "./registrationAction.action";
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -50,9 +51,21 @@ const Registration: React.FC = () => {
     }));
   };
 
-  console.log(formData);
+  // console.log(formData);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const registrationData = {
+      name: formData.name.trim(),
+      userName: formData.userName.trim(),
+      email: formData.email.toLowerCase().trim(),
+      password: formData.password,
+      role: formData.role,
+    };
+
+    await registrationAction(registrationData);
+    
     try {
     } catch (error) {}
   };
@@ -69,7 +82,8 @@ const Registration: React.FC = () => {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {/* action={registrationAction} */}
+          <form onClick={handleSubmit} className="space-y-6">
             {/* Name Field */}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name *</Label>
@@ -78,6 +92,7 @@ const Registration: React.FC = () => {
                 <Input
                   id="name"
                   type="text"
+                  name="name"
                   placeholder="Enter your full name"
                   required
                   value={formData.name}
@@ -97,6 +112,7 @@ const Registration: React.FC = () => {
                 <Input
                   id="userName"
                   type="text"
+                  name="userName"
                   placeholder="Choose a username"
                   required
                   value={formData.userName}
@@ -116,6 +132,7 @@ const Registration: React.FC = () => {
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="Enter your email"
                   required
                   value={formData.email}
@@ -132,6 +149,7 @@ const Registration: React.FC = () => {
               <Label htmlFor="role">I am a *</Label>
               <Select
                 value={formData.role}
+                name="role"
                 onValueChange={(value: "applicant" | "employer") =>
                   handleInputChange("role", value)
                 }
@@ -156,6 +174,7 @@ const Registration: React.FC = () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
                   required
+                  name="password"
                   value={formData.password}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     handleInputChange("password", e.target.value)
@@ -189,6 +208,7 @@ const Registration: React.FC = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
                   required
+                  name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     handleInputChange("confirmPassword", e.target.value)

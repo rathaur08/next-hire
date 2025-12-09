@@ -1,5 +1,6 @@
 import {
   int,
+  mysqlEnum,
   mysqlTable,
   text,
   timestamp,
@@ -12,8 +13,23 @@ export const users = mysqlTable("users", {
   userName: varchar("username", { length: 255 }).notNull().unique(),
   password: text("password").notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
+  role: mysqlEnum("role", ["admin", "applicant", "employer"]).default(
+    "applicant"
+  ),
   phoneNumber: varchar("phone_number", { length: 255 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   deleteAt: timestamp("deleted_at"),
+});
+
+export const sessions = mysqlTable("sessions", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  userId: int("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  userAgent: text("user_agent").notNull(),
+  ip: varchar("ip", { length: 255 }).notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });

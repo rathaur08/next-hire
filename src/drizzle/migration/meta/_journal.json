@@ -8,6 +8,13 @@
       "when": 1765176997128,
       "tag": "0000_left_leper_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1765277312134,
+      "tag": "0001_amused_famine",
+      "breakpoints": true
     }
   ]
 }
