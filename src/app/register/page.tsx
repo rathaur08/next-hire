@@ -64,10 +64,11 @@ const Registration: React.FC = () => {
       role: formData.role,
     };
 
+    if (formData.password !== formData.confirmPassword) {
+      return alert("Passwords do not match!");
+    }
+
     await registrationAction(registrationData);
-    
-    try {
-    } catch (error) {}
   };
 
   return (
@@ -83,7 +84,7 @@ const Registration: React.FC = () => {
 
         <CardContent>
           {/* action={registrationAction} */}
-          <form onClick={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name Field */}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name *</Label>
