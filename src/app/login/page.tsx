@@ -15,38 +15,24 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
 import { loginAction } from "@/features/auth/server/auth.actions";
-
-interface LoginFormData {
-  email: string;
-  password: string;
-}
+import { LoginUserData, loginUserSchema } from "@/features/auth/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginUserSchema),
   });
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleInputChange = (name: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  console.log(formData);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    const loginData = {
-      email: formData.email.toLowerCase().trim(),
-      password: formData.password,
-    };
-
-    const result = await loginAction(loginData);
+  const onSubmit = async (data: LoginUserData) => {
+    const result = await loginAction(data);
     if (result.status === "SUCCESS") toast.success(result.message);
     else toast.error(result.message);
   };
@@ -63,7 +49,7 @@ const Login: React.FC = () => {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Email Field */}
             <div className="space-y-2">
               <Label htmlFor="email">Email Address *</Label>
@@ -74,14 +60,15 @@ const Login: React.FC = () => {
                   type="email"
                   placeholder="Enter your email"
                   required
-                  name="email"
-                  value={formData.email}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange("email", e.target.value)
-                  }
+                  {...register("email")}
                   className={`pl-10 `}
                 />
               </div>
+              {errors.email && (
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -94,14 +81,9 @@ const Login: React.FC = () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
                   required
-                  name="password"
-                  value={formData.password}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange("password", e.target.value)
-                  }
+                  {...register("password")}
                   className={`pl-10 pr-10 `}
                 />
-
                 <Button
                   type="button"
                   variant="ghost"
@@ -116,6 +98,11 @@ const Login: React.FC = () => {
                   )}
                 </Button>
               </div>
+              {errors.password && (
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
             {/* Submit Button */}

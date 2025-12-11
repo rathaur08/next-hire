@@ -21,54 +21,28 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
-
-interface RegistrationFormData {
-  name: string;
-  userName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  role: "applicant" | "employer";
-}
+import { useForm } from "react-hook-form";
+import {
+  RegisterUserWithConfirmData,
+  registerUserWithConfirmSchema,
+} from "@/features/auth/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Registration: React.FC = () => {
-  const [formData, setFormData] = useState<RegistrationFormData>({
-    name: "",
-    userName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "applicant",
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerUserWithConfirmSchema),
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleInputChange = (name: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // console.log(formData);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    const registrationData = {
-      name: formData.name.trim(),
-      userName: formData.userName.trim(),
-      email: formData.email.toLowerCase().trim(),
-      password: formData.password,
-      role: formData.role,
-    };
-
-    if (formData.password !== formData.confirmPassword) {
-      return toast.warning("Passwords do not match!");
-    }
-
-    const result = await registrationAction(registrationData);
+  const onSubmit = async (data: RegisterUserWithConfirmData) => {
+    const result = await registrationAction(data);
     if (result.status === "SUCCESS") toast.success(result.message);
     else toast.error(result.message);
   };
@@ -86,7 +60,7 @@ const Registration: React.FC = () => {
 
         <CardContent>
           {/* action={registrationAction} */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Name Field */}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name *</Label>
@@ -95,13 +69,9 @@ const Registration: React.FC = () => {
                 <Input
                   id="name"
                   type="text"
-                  name="name"
                   placeholder="Enter your full name"
                   required
-                  value={formData.name}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange("name", e.target.value)
-                  }
+                  {...register("name")}
                   className={`pl-10 `}
                 />
               </div>
@@ -115,16 +85,17 @@ const Registration: React.FC = () => {
                 <Input
                   id="userName"
                   type="text"
-                  name="userName"
                   placeholder="Choose a username"
                   required
-                  value={formData.userName}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange("userName", e.target.value)
-                  }
+                  {...register("userName")}
                   className={`pl-10 `}
                 />
               </div>
+              {errors.userName && (
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.userName.message}
+                </p>
+              )}
             </div>
 
             {/* Email Field */}
@@ -135,13 +106,9 @@ const Registration: React.FC = () => {
                 <Input
                   id="email"
                   type="email"
-                  name="email"
                   placeholder="Enter your email"
                   required
-                  value={formData.email}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange("email", e.target.value)
-                  }
+                  {...register("email")}
                   className={`pl-10 `}
                 />
               </div>
@@ -150,13 +117,7 @@ const Registration: React.FC = () => {
             {/* Role Selection */}
             <div className="space-y-2 w-full">
               <Label htmlFor="role">I am a *</Label>
-              <Select
-                value={formData.role}
-                name="role"
-                onValueChange={(value: "applicant" | "employer") =>
-                  handleInputChange("role", value)
-                }
-              >
+              <Select {...register("role")}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select your role" />
                 </SelectTrigger>
@@ -177,11 +138,7 @@ const Registration: React.FC = () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
                   required
-                  name="password"
-                  value={formData.password}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange("password", e.target.value)
-                  }
+                  {...register("password")}
                   className={`pl-10 pr-10 `}
                 />
 
@@ -211,11 +168,7 @@ const Registration: React.FC = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
                   required
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange("confirmPassword", e.target.value)
-                  }
+                  {...register("confirmPassword")}
                   className={`pl-10 pr-10 `}
                 />
                 <Button
