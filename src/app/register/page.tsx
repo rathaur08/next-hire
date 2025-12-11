@@ -1,6 +1,5 @@
 "use client";
-import { registrationAction } from "./registrationAction.action";
-
+import { registrationAction } from "@/features/auth/server/auth.actions";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
