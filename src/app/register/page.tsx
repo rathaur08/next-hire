@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   RegisterUserWithConfirmData,
   registerUserWithConfirmSchema,
@@ -32,7 +32,7 @@ const Registration: React.FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerUserWithConfirmSchema),
@@ -117,15 +117,21 @@ const Registration: React.FC = () => {
             {/* Role Selection */}
             <div className="space-y-2 w-full">
               <Label htmlFor="role">I am a *</Label>
-              <Select {...register("role")}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select your role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="applicant">Job Applicant</SelectItem>
-                  <SelectItem value="employer">Employer</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                name="role"
+                control={control}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select your role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="applicant">Job Applicant</SelectItem>
+                      <SelectItem value="employer">Employer</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              ></Controller>
             </div>
 
             {/* Password Field */}
