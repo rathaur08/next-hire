@@ -12,6 +12,7 @@ type CreateSessionData = {
   token: string;
   ip: string;
   userAgent: string;
+  tx?: DbClient;
 };
 
 const generateSessionToken = () => {
@@ -23,10 +24,11 @@ const createUserSession = async ({
   userId,
   ip,
   userAgent,
+  tx = db,
 }: CreateSessionData) => {
   const hashedToken = crypto.createHash("sha-256").update(token).digest("hex");
 
-  const [session] = await db.insert(sessions).values({
+  const [session] = await tx.insert(sessions).values({
     id: hashedToken,
     userId,
     ip,
@@ -37,7 +39,13 @@ const createUserSession = async ({
   return session;
 };
 
-export const createSessionAndCookies = async (userId: number) => {
+// Give me the type of the first parameter of the callback inside db.transaction — that's the tx object
+type DbClient = typeof db | Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+export const createSessionAndCookies = async (
+  userId: number,
+  tx: DbClient = db
+) => {
   const token = generateSessionToken();
   const ip = await getIPAddress();
   const headersList = await headers();
@@ -47,6 +55,7 @@ export const createSessionAndCookies = async (userId: number) => {
     token,
     ip,
     userAgent: headersList.get("user-agent") || " ",
+    tx,
   });
 
   const createCookie = await cookies();

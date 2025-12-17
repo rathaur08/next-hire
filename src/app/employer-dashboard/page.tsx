@@ -5,7 +5,9 @@ const EmployerDashboard = () => {
     <>
       <div>
         <h1> Employer Dashboard</h1>
-        <button type="button" onClick={logoutUserAction}> Logout</button>
+        <button type="button" onClick={logoutUserAction}>
+          Logout
+        </button>
       </div>
     </>
   );

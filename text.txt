@@ -1,0 +1,14 @@
+
+// Generate migrations:
+
+npx drizzle-kit generate
+
+// Apply migrations:
+
+npx drizzle-kit migrate
+
+
+// Run DataBase drizzle-kit studio
+// Drizzle Studio is up and running on https://local.drizzle.studio
+
+npx drizzle-kit studio
