@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Eye, EyeOff, Lock, Mail, UserCheck } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Route, UserCheck } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -18,8 +18,10 @@ import { loginAction } from "@/features/auth/server/auth.actions";
 import { LoginUserData, loginUserSchema } from "@/features/auth/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const Login: React.FC = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,

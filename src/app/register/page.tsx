@@ -27,8 +27,11 @@ import {
   registerUserWithConfirmSchema,
 } from "@/features/auth/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 const Registration: React.FC = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -43,6 +46,12 @@ const Registration: React.FC = () => {
 
   const onSubmit = async (data: RegisterUserWithConfirmData) => {
     const result = await registrationAction(data);
+
+    if (result.status === "SUCCESS") {
+      if (data.role === "employer") router.push("employer-dashboard");
+      else router.push("/");
+    }
+
     if (result.status === "SUCCESS") toast.success(result.message);
     else toast.error(result.message);
   };
