@@ -34,6 +34,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data: LoginUserData) => {
     const result = await loginAction(data);
+
     if (result.status === "SUCCESS") toast.success(result.message);
     else toast.error(result.message);
   };
@@ -45,8 +46,8 @@ const LoginForm = () => {
           <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
             <UserCheck className="w-8 h-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl">Join Our Job Portal</CardTitle>
-          <CardDescription>Create your account to get started</CardDescription>
+          <CardTitle className="text-2xl"> Welcome Back</CardTitle>
+          <CardDescription>Login to Continue</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -113,12 +114,12 @@ const LoginForm = () => {
 
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
-                Already have an account?
+                 Don't have an account? {" "}
                 <Link
                   href="/register"
                   className="text-primary hover:text-primary/80 font-medium underline-offset-4 hover:underline"
                 >
-                  Sign in here
+                  Create Account
                 </Link>
               </p>
             </div>
