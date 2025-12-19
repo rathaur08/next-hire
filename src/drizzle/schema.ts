@@ -20,6 +20,7 @@ export const users = mysqlTable("users", {
     "applicant"
   ),
   phoneNumber: varchar("phone_number", { length: 255 }),
+  avatarUrl: text("avatar_url"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   deleteAt: timestamp("deleted_at"),

@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/features/auth/server/auth.queries";
+import EmployerProfileCompletionStatus from "@/features/employers/components/EmployerProfileCompletionStatus";
 import StatsCards from "@/features/employers/components/EmployersStatsCards";
 import { redirect } from "next/navigation";
 
@@ -23,6 +24,8 @@ const EmployerDashboard = async () => {
 
           {/* Stats Cards */}
           <StatsCards />
+
+            <EmployerProfileCompletionStatus />
         </div>
       </div>
     </>

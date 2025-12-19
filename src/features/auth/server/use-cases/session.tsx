@@ -80,14 +80,18 @@ export const validateSessionAndGetUser = async (session: string) => {
       session: {
         id: sessions.id,
         expiresAt: sessions.expiresAt,
+        userAgent: sessions.userAgent,
         ip: sessions.ip,
       },
       name: users.name,
-      usersName: users.userName,
-      email: users.email,
+      userName: users.userName,
       role: users.role,
       phoneNumber: users.phoneNumber,
+      email: users.email,
+      // emailVerifiedAt: users.emailVerifiedAt,
+      avatarUrl: users.avatarUrl,
       createdAt: users.createdAt,
+      updatedAt: users.updatedAt,
     })
     .from(sessions)
     .where(eq(sessions.id, hashedToken))

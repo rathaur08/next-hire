@@ -31,7 +31,7 @@ const navigationItems = [
 
 const EmployerSidebar = () => {
   const pathname = usePathname();
-  console.log("usepathname: ", pathname);
+  // console.log("usepathname: ", pathname);
 
   // to check the link of the matching sidebar
   function isLinkActive({
