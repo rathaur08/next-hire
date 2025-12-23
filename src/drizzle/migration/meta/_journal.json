@@ -29,6 +29,20 @@
       "when": 1766055923074,
       "tag": "0003_ordinary_captain_britain",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1766393545641,
+      "tag": "0004_thankful_screwball",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1766471189122,
+      "tag": "0005_bent_steel_serpent",
+      "breakpoints": true
     }
   ]
 }

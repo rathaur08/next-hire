@@ -1,0 +1,1 @@
+ALTER TABLE `employers` ADD `avatar_url` text;

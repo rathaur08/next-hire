@@ -1,7 +1,6 @@
-import { redirect } from "next/navigation";
 import { getCurrentUser } from "../auth/server/auth.queries";
-import { db } from "@/config/db";
 import { employers } from "@/drizzle/schema";
+import { db } from "@/config/db";
 import { eq } from "drizzle-orm";
 
 export const getCurrentEmployerDetails = async () => {
@@ -16,16 +15,14 @@ export const getCurrentEmployerDetails = async () => {
     .from(employers)
     .where(eq(employers.id, currentUser.id));
 
-  console.log("employer: ", employer);
+  // console.log("employer-: ", employer);
 
   const isProfileCompleted =
     employer.name &&
     employer.description &&
-    currentUser.avatarUrl &&
+    employer.avatarUrl &&
     employer.organizationType &&
     employer.yearOfEstablishment;
 
   return { ...currentUser, employerDetails: employer, isProfileCompleted };
-
-  //
 };

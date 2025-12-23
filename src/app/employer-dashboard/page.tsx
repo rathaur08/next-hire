@@ -25,7 +25,7 @@ const EmployerDashboard = async () => {
           {/* Stats Cards */}
           <StatsCards />
 
-            <EmployerProfileCompletionStatus />
+          <EmployerProfileCompletionStatus />
         </div>
       </div>
     </>

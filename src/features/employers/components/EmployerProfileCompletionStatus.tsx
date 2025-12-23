@@ -12,13 +12,13 @@ import { ShieldAlertIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-const EmployerProfileCompletionStatus = () => {
-  const currentEmployer = getCurrentEmployerDetails();
+const EmployerProfileCompletionStatus = async () => {
+  const currentEmployer = await getCurrentEmployerDetails();
   // console.log("current Employer data ", currentEmployer);
 
   if (!currentEmployer) return redirect("/login");
 
-  // if (currentEmployer.isProfileCompleted) return null;
+  if (currentEmployer.isProfileCompleted) return null;
 
   return (
     <>
