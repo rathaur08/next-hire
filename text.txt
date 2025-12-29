@@ -12,3 +12,7 @@ npx drizzle-kit migrate
 // Drizzle Studio is up and running on https://local.drizzle.studio
 
 npx drizzle-kit studio
+
+
+// DATABASE_URL env
+DATABASE_URL=mysql://root:password@localhost:3306/nextjs_job_portal
