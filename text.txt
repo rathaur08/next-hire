@@ -16,3 +16,15 @@ npx drizzle-kit studio
 
 // DATABASE_URL env
 DATABASE_URL=mysql://root:password@localhost:3306/nextjs_job_portal
+
+
+// Image/Files Upload Server Free
+uploadthing
+https://uploadthing.com
+Easily manage your files. A powerful, intuitive dashboard for developers to securely manage 
+and track all uploaded files. Worry about your app, not your bill.
+
+add .ENV File Token 
+UPLOADTHING_TOKEN=... # A token for interacting with the SDK
+
+//

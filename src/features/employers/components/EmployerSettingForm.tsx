@@ -12,6 +12,7 @@ import {
   Globe,
   Loader,
   MapPin,
+  X,
 } from "lucide-react";
 import {
   Select,
@@ -31,6 +32,8 @@ import {
 import { updateEmployerProfileAction } from "@/features/server/EmployersAction";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/text-editor";
+import { UploadButton } from "@/lib/uploadthing";
+import Image from "next/image";
 
 // interface IFormInput {
 //   name: string;
@@ -51,6 +54,7 @@ const EmployerSettingForm = ({
     register,
     handleSubmit,
     control,
+    setValue,
     watch, //Give me the current value of this field in the form state, and re-render this component when it changes.
     formState: { errors, isSubmitting, isDirty },
   } = useForm<EmployerProfileData>({
@@ -62,9 +66,15 @@ const EmployerSettingForm = ({
       yearOfEstablishment: initialData?.yearOfEstablishment,
       websiteUrl: initialData?.websiteUrl || "",
       location: initialData?.location || "",
+      avatarUrl: initialData?.avatarUrl || "",
     },
     resolver: zodResolver(employerProfileSchema),
   });
+
+  const avatarUrl = watch("avatarUrl");
+  const handleRemoveAvatar = () => {
+    setValue("avatarUrl", ""); //Programmatically update a form field’s value inside react-hook-form.
+  };
 
   const handleFormSubmit = async (data: EmployerProfileData) => {
     console.log("Employer Setting Form data: ", data);
@@ -83,6 +93,60 @@ const EmployerSettingForm = ({
       <Card className="w-3/4 ">
         <CardContent>
           <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+            <div>
+              {/* <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  // Do something with the response
+                  console.log("Files: ", res);
+                  alert("Upload Completed");
+                }}
+                onUploadError={(error: Error) => {
+                  // Do something with the error.
+                  alert(`ERROR! ${error.message}`);
+                }}
+              /> */}
+
+              <Label>Company Logo</Label>
+              {avatarUrl ? (
+                <div className="flex items-center gap-4">
+                  <div className="relative w-24 h-24 rounded-lg overflow-hidden border-2 border-border">
+                    <Image
+                      src={avatarUrl}
+                      alt="Company logo"
+                      className="w-full h-full object-cover"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleRemoveAvatar}
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Remove Logo
+                  </Button>
+                </div>
+              ) : (
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res) => {
+                    const profilePic = res[0];
+
+                    setValue("avatarUrl", profilePic.ufsUrl, {
+                      shouldDirty: true,
+                    });
+                    console.log("Files: ", res);
+                  }}
+                  onUploadError={(error: Error) => {
+                    toast.error(`Upload failed: ${error.message}`);
+                  }}
+                />
+              )}
+            </div>
+
             {/* Company Name */}
             <div className="space-y-2">
               <Label htmlFor="companyName">Company Name *</Label>

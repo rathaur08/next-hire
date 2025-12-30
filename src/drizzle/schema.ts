@@ -45,7 +45,7 @@ export const employers = mysqlTable("employers", {
     .references(() => users.id, { onDelete: "cascade" }),
   name: varchar("name", { length: 255 }),
   description: text("description"),
-  avatarUrl: text("avatar_url"),
+  // avatarUrl: text("avatar_url"),
   bannerImageUrl: text("banner_image_url"),
   organizationType: varchar("organization_type", { length: 100 }),
   teamSize: varchar("team_size", { length: 50 }),
