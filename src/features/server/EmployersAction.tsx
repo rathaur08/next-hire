@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../auth/server/auth.queries";
 import { db } from "@/config/db";
-import { employers } from "@/drizzle/schema";
+import { employers, users } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { EmployerProfileData } from "../employers/EmployerSchema";
 
@@ -35,6 +35,8 @@ export const updateEmployerProfileAction = async (
       yearOfEstablishment,
       websiteUrl,
       location,
+      avatarUrl,
+      bannerImageUrl,
     } = data;
 
     const updateEmployer = await db
@@ -49,10 +51,16 @@ export const updateEmployerProfileAction = async (
           : null,
         websiteUrl,
         location,
+        bannerImageUrl,
       })
       .where(eq(employers.id, currentUser.id));
 
     // console.log("Update profile data:", updateEmployer);
+
+    await db
+      .update(users)
+      .set({ avatarUrl })
+      .where(eq(users.id, currentUser.id));
 
     return { status: "SUCCESS", message: "Profile Update Successfully" };
 
