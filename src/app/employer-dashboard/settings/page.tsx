@@ -13,8 +13,7 @@ const EmployerSettings = async () => {
   return (
     <>
       <div>
-        <h1> Employer Setting Page </h1>
-
+        {/* <h1 className="text-2xl font-semibold text-foreground"> Employer Settings </h1> */}
         {/* Employer Setting Form Components */}
         <EmployerSettingForm
           initialData={

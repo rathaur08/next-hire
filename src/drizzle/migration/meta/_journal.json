@@ -43,6 +43,13 @@
       "when": 1766471189122,
       "tag": "0005_bent_steel_serpent",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1767951454551,
+      "tag": "0006_new_ultimates",
+      "breakpoints": true
     }
   ]
 }
