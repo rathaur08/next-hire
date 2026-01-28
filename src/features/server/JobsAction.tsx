@@ -3,7 +3,7 @@ import { db } from "@/config/db";
 import { JobsFormData, jobsSchema } from "../employers/jobs/JobsSchema";
 import { jobs } from "@/drizzle/schema";
 import { getCurrentUser } from "../auth/server/auth.queries";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { Job } from "../employers/jobs/types/JobTypes";
 
 export const createJobAction = async (data: JobsFormData) => {
@@ -66,5 +66,29 @@ export const getEmployerJobsAction = async (): Promise<{
       status: "ERROR",
       message: "Something went wrong",
     };
+  }
+};
+
+// Delete Job Post
+//deleteJobAction
+export const deleteJobAction = async (jobId: number) => {
+  try {
+    const currentUser = await getCurrentUser();
+    if (!currentUser || currentUser.role !== "employer") {
+      return { status: "ERROR", message: "Unauthorized" };
+    }
+
+    // Ensure the employer can only delete their own jobs
+    await db
+      .delete(jobs)
+      .where(and(eq(jobs.id, jobId), eq(jobs.employerId, currentUser.id)));
+
+    // Optional: clear cache for the jobs page
+    // revalidatePath("/dashboard/jobs");
+
+    return { status: "SUCCESS", message: "Job deleted successfully" };
+  } catch (error) {
+    console.error("DELETE_JOB_ERROR", error);
+    return { status: "ERROR", message: "Something went wrong while deleting" };
   }
 };

@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import { EmployerJobCard } from "./EmployerJobCard";
 
-import { getEmployerJobsAction } from "@/features/server/JobsAction";
+import {
+  deleteJobAction,
+  getEmployerJobsAction,
+} from "@/features/server/JobsAction";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Job } from "../jobs/types/JobTypes";
@@ -36,19 +39,19 @@ export const EmployerJobsList = () => {
     fetchJobs();
   }, []);
 
-  // const handleDelete = async (jobId: number) => {
-  //   try {
-  //     const res = await deleteJobAction(jobId);
-  //     if (res.status === "SUCCESS") {
-  //       setJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
-  //       toast.success("Job deleted successfully");
-  //     } else {
-  //       toast.error(res.message);
-  //     }
-  //   } catch (error) {
-  //     toast.error("An unexpected error occurred");
-  //   }
-  // };
+  const handleDelete = async (jobId: number) => {
+    try {
+      const res = await deleteJobAction(jobId);
+      if (res.status === "SUCCESS") {
+        setJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
+        toast.success("Job deleted successfully");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+    }
+  };
 
   // const handleEdit = async (jobId: number) => {
   //   router.push(`/employer-dashboard/jobs/${jobId}/edit`);
@@ -73,7 +76,7 @@ export const EmployerJobsList = () => {
   return (
     <section className="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
       {jobs.map((job) => (
-        <EmployerJobCard key={job.id} job={job} />
+        <EmployerJobCard key={job.id} job={job} onDelete={handleDelete} />
       ))}
     </section>
   );
