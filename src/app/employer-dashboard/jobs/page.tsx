@@ -1,16 +1,14 @@
-import { EmployerJobsForm } from "@/features/employers/components/EmployerJobsForm";
+import { EmployerJobsList } from "@/features/employers/components/EmployerJobsList";
 
-const EmployerJobs = () => {
+const JobsList = () => {
   return (
     <>
       <div>
-        <h1 className="text-2xl font-semibold text-foreground">
-          Post a New Jobs
-        </h1>
-        <EmployerJobsForm />
+        <h1 className="text-2xl font-semibold text-foreground">My Job Post</h1>
+        <EmployerJobsList />
       </div>
     </>
   );
 };
 
-export default EmployerJobs;
+export default JobsList;

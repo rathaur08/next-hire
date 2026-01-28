@@ -92,3 +92,53 @@ export const deleteJobAction = async (jobId: number) => {
     return { status: "ERROR", message: "Something went wrong while deleting" };
   }
 };
+
+export const getJobByIdAction = async (jobId: number) => {
+  try {
+    const currentUser = await getCurrentUser();
+    if (!currentUser) return { status: "ERROR", message: "Unauthorized" };
+
+    // Use db.select() instead of db.query
+    const [job] = await db
+      .select()
+      .from(jobs)
+      .where(and(eq(jobs.id, jobId), eq(jobs.employerId, currentUser.id)))
+      .limit(1);
+
+    if (!job) {
+      return { status: "ERROR", message: "Job not found" };
+    }
+
+    return { status: "SUCCESS", data: job };
+  } catch (error) {
+    return { status: "ERROR", message: "Failed to fetch job details" };
+  }
+};
+
+// Replace 'JobFormValues' with your Zod schema type
+export const updateJobAction = async (jobId: number, values: any) => {
+  try {
+    const currentUser = await getCurrentUser();
+
+    // Security check
+    if (!currentUser || currentUser.role !== "employer") {
+      return { status: "ERROR", message: "Unauthorized" };
+    }
+
+    // Perform the Update
+    await db
+      .update(jobs)
+      .set({
+        ...values,
+        updatedAt: new Date(), // Always update the timestamp
+      })
+      .where(and(eq(jobs.id, jobId), eq(jobs.employerId, currentUser.id)));
+
+    // Refresh the jobs list page so the new data shows up immediately
+    // revalidatePath("/employer-dashboard/jobs");
+
+    return { status: "SUCCESS", message: "Job updated successfully" };
+  } catch (error) {
+    return { status: "ERROR", message: "Failed to update job" };
+  }
+};

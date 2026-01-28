@@ -53,9 +53,9 @@ export const EmployerJobsList = () => {
     }
   };
 
-  // const handleEdit = async (jobId: number) => {
-  //   router.push(`/employer-dashboard/jobs/${jobId}/edit`);
-  // };
+  const handleEdit = async (jobId: number) => {
+    router.push(`/employer-dashboard/jobs/${jobId}/edit`);
+  };
 
   if (isLoading) {
     return (
@@ -76,7 +76,12 @@ export const EmployerJobsList = () => {
   return (
     <section className="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
       {jobs.map((job) => (
-        <EmployerJobCard key={job.id} job={job} onDelete={handleDelete} />
+        <EmployerJobCard
+          key={job.id}
+          job={job}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+        />
       ))}
     </section>
   );
