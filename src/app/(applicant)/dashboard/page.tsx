@@ -1,13 +1,11 @@
-import { logoutUserAction } from "@/features/auth/server/auth.actions";
 
 const ApplicantDashboard = () => {
   return (
     <>
       <div>
-        <h1> Applicant Dashboard</h1>
-        <button type="button" onClick={logoutUserAction}>
-          Logout
-        </button>
+        <h1 className="text-2xl font-semibold text-foreground">
+          Applicant Dashboard
+        </h1>
       </div>
     </>
   );

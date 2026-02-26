@@ -11,8 +11,8 @@ export const createJobAction = async (data: JobsFormData) => {
     const { success, data: result, error } = jobsSchema.safeParse(data);
 
     if (!success) {
-      console.log("Zod Validation Error:", error.flatten());
-      console.log("Recived Data :", data);
+      // console.log("Zod Validation Error:", error.flatten());
+      // console.log("Recived Data :", data);
 
       return {
         status: "ERROR",
