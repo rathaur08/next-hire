@@ -1,12 +1,40 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
+import { JobFilters } from "@/features/applicants/jobs/components/jobFilters";
 import { JobCard } from "@/features/employers/jobs/components/jobCard";
 import { getAllJobs } from "@/features/employers/jobs/server/JobsQueries";
 import Link from "next/link";
-import React from "react";
 
-const page = async () => {
+interface pageProp {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+const page = async ({ searchParams }: pageProp) => {
+  const resolvedParams = await searchParams;
+
+  console.log("resolvedParams", resolvedParams);
+
+  const filters: JobFilterParams = {
+    search:
+      typeof resolvedParams.search === "string"
+        ? resolvedParams.search
+        : undefined,
+    jobType:
+      typeof resolvedParams.jobType === "string"
+        ? resolvedParams.jobType
+        : undefined,
+    jobLevel:
+      typeof resolvedParams.jobLevel === "string"
+        ? resolvedParams.jobLevel
+        : undefined,
+    workType:
+      typeof resolvedParams.workType === "string"
+        ? resolvedParams.workType
+        : undefined,
+  };
+
   // Fetch Data  jobs
-  const jobs = await getAllJobs();
+  const jobs = await getAllJobs(filters);
 
   // console.log("jobs", jobs);
 
@@ -24,7 +52,7 @@ const page = async () => {
         </div>
 
         {/* 3. Add the Filter Component Here */}
-        {/* <JobFilters /> */}
+        <JobFilters />
 
         {/* Job Grid */}
         {jobs.length > 0 ? (

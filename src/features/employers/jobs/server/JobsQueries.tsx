@@ -1,11 +1,55 @@
 import { db } from "@/config/db";
 import { employers, jobs, users } from "@/drizzle/schema";
-import { and, desc, eq, gte, isNull, or } from "drizzle-orm";
+import { and, desc, eq, gte, isNull, like, or, SQL } from "drizzle-orm";
 
-export async function getAllJobs() {
-  //
+// 2. Define the Interface
+export interface JobFilterParams {
+  search?: string;
+  jobType?: string;
+  jobLevel?: string;
+  workType?: string;
+}
+
+export async function getAllJobs(filters: JobFilterParams) {
+  console.log("filers real: ", filters);
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
+  const conditions: (SQL | undefined)[] = [
+    isNull(jobs.deletedAt),
+    or(isNull(jobs.expiresAt), gte(jobs.expiresAt, today)),
+  ];
+
+  //search
+  if (filters?.search) {
+    // 1: react - mern stack react title , react, react thapa
+    // % - wildcard
+    // 2: company name, tags, title  - LIKE() - contains
+    // 3: OR
+
+    const searchTerm = `%${filters.search}%`;
+
+    conditions.push(
+      or(
+        like(jobs.title, searchTerm),
+        like(employers.name, searchTerm),
+        like(jobs.tags, searchTerm),
+      ),
+    );
+  }
+
+  if (filters?.jobType && filters.jobType !== "all") {
+    conditions.push(eq(jobs.jobType, filters.jobType as any));
+  }
+
+  if (filters?.jobLevel && filters.jobLevel !== "all") {
+    conditions.push(eq(jobs.jobLevel, filters.jobLevel as any));
+  }
+
+  if (filters?.workType && filters.workType !== "all") {
+    conditions.push(eq(jobs.workType, filters.workType as any));
+  }
 
   const jobsData = await db
     .select({
@@ -26,12 +70,13 @@ export async function getAllJobs() {
     .from(jobs)
     .innerJoin(employers, eq(jobs.employerId, employers.id))
     .innerJoin(users, eq(employers.id, users.id))
-    .where(
-      and(
-        isNull(jobs.deletedAt),
-        or(isNull(jobs.expiresAt), gte(jobs.expiresAt, today)),
-      ),
-    )
+    // .where(
+    //   and(
+    //     isNull(jobs.deletedAt),
+    //     or(isNull(jobs.expiresAt), gte(jobs.expiresAt, today)),
+    //   ),
+    // )
+    .where(and(...conditions))
     .orderBy(desc(jobs.createdAt));
 
   return jobsData;
