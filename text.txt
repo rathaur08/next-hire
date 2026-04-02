@@ -30,9 +30,9 @@ UPLOADTHING_TOKEN=... # A token for interacting with the SDK
 
 ///////////////////////////////////////////////////////////////////////////////
 
-git remote set-url origin https://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@github.com/rathaur08/next-hire.git 
+git remote set-url origin https://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@github.com/rathaur08/next-hire.git 
 
-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
+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
 
 // video text 
 1 code 
