@@ -50,6 +50,13 @@
       "when": 1767951454551,
       "tag": "0006_new_ultimates",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1775113344075,
+      "tag": "0007_puzzling_princess_powerful",
+      "breakpoints": true
     }
   ]
 }

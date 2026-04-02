@@ -27,7 +27,7 @@ export const users = mysqlTable("users", {
   password: text("password").notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   role: mysqlEnum("role", ["admin", "applicant", "employer"]).default(
-    "applicant"
+    "applicant",
   ),
   phoneNumber: varchar("phone_number", { length: 255 }),
   avatarUrl: text("avatar_url"),
@@ -119,6 +119,29 @@ export const jobs = mysqlTable("jobs", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
+
+export const resumes = mysqlTable("resumes", {
+  id: int("id").autoincrement().primaryKey(),
+  applicantId: int("applicant_id")
+    .notNull()
+    .references(() => applicants.id, { onDelete: "cascade" }),
+
+  fileUrl: text("file_url").notNull(), // The UploadThing URL
+  fileName: varchar("file_name", { length: 255 }).notNull(),
+
+  fileSize: int("file_size"),
+  isPrimary: boolean("is_primary").default(false),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export const resumesRelations = relations(resumes, ({ one }) => ({
+  applicant: one(applicants, {
+    fields: [resumes.applicantId],
+    references: [applicants.id],
+  }),
+}));
 
 export const jobsRelations = relations(jobs, ({ one }) => ({
   // Each job belongs to one employer
