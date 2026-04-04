@@ -57,6 +57,13 @@
       "when": 1775113344075,
       "tag": "0007_puzzling_princess_powerful",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1775280828962,
+      "tag": "0008_silky_virginia_dare",
+      "breakpoints": true
     }
   ]
 }

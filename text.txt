@@ -80,5 +80,14 @@ Create/Update Code - Build Applicant Dashboard UI | Build Applicant Profile Sett
 
 4 code 
 --------------------
+How to Track Who Applied for Which Job? (Next.js + MySQL + Drizzle)
+Next.js Job Portal Project 🔥 Apply Job Flow (Part 1) | Check Applied + Prepare Modal Data
+Build “Apply Now” Modal in Next.js | Pre-Fill Resume & Prevent Duplicate Applications
+Save Job Application to Database ✅ Next.js Server Action
 
+---------
+Create/Update Code - Track Who Applied for Which Job | Apply Job Flow - Check Applied + Prepare Modal Data | Build “Apply Now” Modal - Pre-Fill Resume & Prevent Duplicate Applications | Save Job Application to Database Server Action
 
+5 code 
+--------------------
+Next.js Applied Jobs Page (Real Project) | Fetch User Applications with MySQL + Drizzle

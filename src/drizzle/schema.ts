@@ -136,6 +136,46 @@ export const resumes = mysqlTable("resumes", {
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 
+export const jobApplications = mysqlTable("job_applications", {
+  id: int("id").autoincrement().primaryKey(),
+
+  jobId: int("job_id")
+    .notNull()
+    .references(() => jobs.id, { onDelete: "cascade" }),
+
+  applicantId: int("applicant_id")
+    .notNull()
+    .references(() => applicants.id, { onDelete: "cascade" }),
+
+  resumeId: int("resume_id")
+    .notNull()
+    .references(() => resumes.id, { onDelete: "restrict" }), // They can't delete a resume if it's used in an application
+
+  coverLetter: text("cover_letter"),
+
+  // You can add a status enum later if you want employers to "accept/reject"
+  // status: mysqlEnum("status", ["pending", "reviewed", "rejected"]).default("pending"),
+  appliedAt: timestamp("applied_at").defaultNow().notNull(),
+});
+
+export const jobApplicationsRelations = relations(
+  jobApplications,
+  ({ one }) => ({
+    job: one(jobs, {
+      fields: [jobApplications.jobId],
+      references: [jobs.id],
+    }),
+    applicant: one(applicants, {
+      fields: [jobApplications.applicantId],
+      references: [applicants.id],
+    }),
+    resume: one(resumes, {
+      fields: [jobApplications.resumeId],
+      references: [resumes.id],
+    }),
+  }),
+);
+
 export const resumesRelations = relations(resumes, ({ one }) => ({
   applicant: one(applicants, {
     fields: [resumes.applicantId],

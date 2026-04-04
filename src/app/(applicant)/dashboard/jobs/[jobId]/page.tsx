@@ -7,6 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { getJobById } from "@/features/employers/jobs/server/JobsQueries";
 import JobOverviewSidebar from "@/features/applicants/jobs/components/jobOverviewSidebar";
 
+import { jobApplications, resumes } from "@/drizzle/schema";
+import { getCurrentUser } from "@/features/auth/server/auth.queries";
+import { db } from "@/config/db";
+import { eq, and } from "drizzle-orm";
+import Link from "next/link";
+import { ApplyJobModal } from "@/features/applicants/jobs/components/applyJobModal";
+
 interface EditJobPageProps {
   params: { jobId: string };
 }
@@ -25,9 +32,35 @@ const JobsDetailedPage = async ({ params }: EditJobPageProps) => {
   if (isNaN(jobId)) return notFound();
 
   const job = await getJobById(jobId);
-  console.log("job: ", job);
+  // console.log("job: ", job);
 
   if (!job) return notFound();
+
+  // --- FETCH USER, APPLICATION STATUS, AND RESUMES ---
+  const user = await getCurrentUser();
+  let hasApplied = false;
+  let userResumes: { id: number; fileName: string }[] = [];
+
+  if (user) {
+    const existingApplication = await db
+      .select()
+      .from(jobApplications)
+      .where(
+        and(
+          eq(jobApplications.jobId, jobId),
+          eq(jobApplications.applicantId, user.id),
+        ),
+      )
+      .limit(1);
+
+    hasApplied = existingApplication.length > 0;
+
+    // Fetch their resumes for the dropdown
+    userResumes = await db
+      .select({ id: resumes.id, fileName: resumes.fileName })
+      .from(resumes)
+      .where(eq(resumes.applicantId, user.id));
+  }
 
   return (
     <>
@@ -39,10 +72,10 @@ const JobsDetailedPage = async ({ params }: EditJobPageProps) => {
             <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border bg-gray-50">
               {job.companyLogo ? (
                 <Image
+                  className="object-cover"
                   src={job.companyLogo}
                   alt={job.companyName || "Company"}
                   fill
-                  className="object-cover"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-gray-100 text-lg font-bold text-gray-400">
@@ -78,11 +111,24 @@ const JobsDetailedPage = async ({ params }: EditJobPageProps) => {
             </div>
           </div>
 
-          {/* Action Button */}
+          {/* -- INTERACTIVE ACTION BUTTON --- */}
           <div className="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
-            <Button size="lg" className="w-full md:w-auto font-semibold">
-              Apply Now
-            </Button>
+            {user ? (
+              <ApplyJobModal
+                jobId={jobId}
+                jobTitle={job.title}
+                hasApplied={hasApplied}
+                resumes={userResumes}
+              />
+            ) : (
+              <Button
+                size="lg"
+                className="w-full md:w-auto font-semibold"
+                asChild
+              >
+                <Link href="/login">Login to Apply</Link>
+              </Button>
+            )}
           </div>
         </div>
 

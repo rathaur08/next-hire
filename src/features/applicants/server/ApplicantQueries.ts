@@ -4,9 +4,9 @@ import {
   applicants,
   users,
   resumes,
-  // jobApplications,
-  // jobs,
-  // employers,
+  jobApplications,
+  jobs,
+  employers,
 } from "@/drizzle/schema";
 
 export async function getApplicantProfileData(userId: number) {
@@ -53,18 +53,18 @@ export type ApplicantProfileType = NonNullable<
   Awaited<ReturnType<typeof getApplicantProfileData>>
 >;
 
-// export async function getAppliedJobsForApplicant(userId: number) {
-//   const applications = await db
-//     .select({
-//       application: jobApplications,
-//       job: jobs,
-//       employer: employers,
-//     })
-//     .from(jobApplications)
-//     .innerJoin(jobs, eq(jobApplications.jobId, jobs.id))
-//     .leftJoin(employers, eq(jobs.employerId, employers.id))
-//     .where(eq(jobApplications.applicantId, userId))
-//     .orderBy(desc(jobApplications.appliedAt));
+export async function getAppliedJobsForApplicant(userId: number) {
+  const applications = await db
+    .select({
+      application: jobApplications,
+      job: jobs,
+      employer: employers,
+    })
+    .from(jobApplications)
+    .innerJoin(jobs, eq(jobApplications.jobId, jobs.id))
+    .leftJoin(employers, eq(jobs.employerId, employers.id))
+    .where(eq(jobApplications.applicantId, userId))
+    .orderBy(desc(jobApplications.appliedAt));
 
-//   return applications;
-// }
+  return applications;
+}

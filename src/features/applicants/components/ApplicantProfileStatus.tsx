@@ -3,24 +3,24 @@ import { ArrowRight, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/features/auth/server/auth.queries";
 import { redirect } from "next/navigation";
-// import { getApplicantProfileData } from "../server/applicantqueries.";
+import { getApplicantProfileData } from "../server/ApplicantQueries";
 
 export async function ApplicantProfileStatus() {
   const user = await getCurrentUser();
   if (!user) return redirect("/login");
 
-  // const profileData = await getApplicantProfileData(user.id);
+  const profileData = await getApplicantProfileData(user.id);
 
-  // const isCompleted = !!(
-  //   profileData?.location &&
-  //   profileData?.biography &&
-  //   profileData?.experience &&
-  //   profileData?.resumeUrl
-  // );
+  const isCompleted = !!(
+    profileData?.location &&
+    profileData?.biography &&
+    profileData?.experience &&
+    profileData?.resumeUrl
+  );
 
-  // if (isCompleted) {
-  //   return null;
-  // }
+  if (isCompleted) {
+    return null;
+  }
 
   return (
     <div className="relative overflow-hidden rounded-xl bg-red-500 p-6 text-white shadow-md">
