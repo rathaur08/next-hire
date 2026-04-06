@@ -17,7 +17,7 @@ export const JobCard = ({ job }: JobCardProps) => {
 
   return (
     <Link
-      href={`/dashboard/jobs/${job.id}`}
+      href={`/jobs/${job.id}`}
       className="group flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-all hover:border-blue-500/50 hover:shadow-md"
     >
       {/* Header: Logo & Title */}

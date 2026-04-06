@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { JobDetailsType } from "@/features/employers/jobs/server/JobsQueries";
 
@@ -78,7 +77,7 @@ const JobOverviewSidebar = ({ job }: JobSidebarProps) => {
               dangerouslySetInnerHTML={{
                 __html: job.companyBio || "No company description available.",
               }}
-            />
+            ></p>
 
             {job.companyWebsite && (
               <Link

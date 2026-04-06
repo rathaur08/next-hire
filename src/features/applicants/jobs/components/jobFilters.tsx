@@ -27,31 +27,65 @@ export const JobFilters = () => {
   const [workType, setWorkType] = useState(searchParams.get("workType") || "");
 
   useEffect(() => {
+    console.log("I am running");
     const delayDebounceFn = setTimeout(() => {
       updateFilters({ search: search });
-    }, 500); // 500ms delay
+    }, 500);
 
     return () => clearTimeout(delayDebounceFn);
   }, [search]);
 
+  // const updateFilters = (newParams: Record<string, string | null>) => {
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   console.log("params: ", params);
+
+  //   Object.entries(newParams).forEach(([key, value]) => {
+  //     const actualValue = value?.trim();
+
+  //     if (!actualValue || actualValue === "all") {
+  //       params.delete(key);
+  //     } else {
+  //       params.set(key, actualValue);
+  //     }
+  //   });
+
+  //   // params.delete("page");
+  //   // or params.set("page", "1");
+  //   // params.set("page", "1");
+
+  //   router.push(`?${params.toString()}`, { scroll: false });
+  // };
+
   const updateFilters = (newParams: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
-    console.log("params: ", params);
+
+    // 1. Create a tracker to see if anything actually changed
+    let filtersChanged = false;
 
     Object.entries(newParams).forEach(([key, value]) => {
       const actualValue = value?.trim();
+      const currentValue = params.get(key) || "";
 
       if (!actualValue || actualValue === "all") {
-        params.delete(key);
+        if (params.has(key)) {
+          params.delete(key);
+          filtersChanged = true;
+        }
       } else {
-        params.set(key, actualValue);
+        if (currentValue !== actualValue) {
+          params.set(key, actualValue);
+          filtersChanged = true;
+        }
       }
     });
 
-    router.push(`?${params.toString()}`, { scroll: false });
+    // 2. ONLY reset the page and push to the router if a filter ACTUALLY changed
+    if (filtersChanged) {
+      // params.delete("page");
+      params.set("page", "1");
+      router.push(`?${params.toString()}`, { scroll: false });
+    }
   };
-
-  // const updateFilters = (newParams: Record<string, string | null>) => {};
 
   const clearFilters = () => {
     setSearch("");
@@ -59,7 +93,7 @@ export const JobFilters = () => {
     setJobLevel("");
     setWorkType("");
 
-    const pathname = "/dashboard/jobs";
+    const pathname = "/jobs";
     router.push(pathname); // Reset to base URL
   };
 

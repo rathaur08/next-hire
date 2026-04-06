@@ -30,9 +30,9 @@ UPLOADTHING_TOKEN=... # A token for interacting with the SDK
 
 ///////////////////////////////////////////////////////////////////////////////
 
-git remote set-url origin https://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@github.com/rathaur08/next-hire.git 
+git remote set-url origin https://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@github.com/rathaur08/next-hire.git 
 
-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
+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
 
 // video text 
 1 code 
@@ -91,3 +91,16 @@ Create/Update Code - Track Who Applied for Which Job | Apply Job Flow - Check Ap
 5 code 
 --------------------
 Next.js Applied Jobs Page (Real Project) | Fetch User Applications with MySQL + Drizzle
+Next.js Profile Incomplete Notification | Check User Profile from MySQL
+Show Latest Applied Jobs in Applicant Dashboard Table | Next.js Job Portal
+Employer Dashboard: Show All Applicants Who Applied to Your Job Post
+Next.js Job Portal Project Completed 🚀 Final Features + Navbar + Search | Full App Wrap-Up
+Add Pagination in Job Portal App (Next.js + MySQL) 🔥 Part 1
+Full Stack Pagination Tutorial (Next + SQL) | Real Project
+FINALLY DONE! 🔥 Job Portal App Completed (Pagination Fix + Full Stack Next.js Project)
+
+---------
+Create/Update Code - Applied Jobs Page (Real Project) + Fetch User Applications | Profile Incomplete Notification + Check User Profile | Show Latest Applied Jobs in Applicant Dashboard Table | Employer Dashboard: Show All Applicants Who Applied to Your Job Post | Create Home Page UI And Final Features + Navbar + Search | Add Pagination in Job Page | Other Some Fix
+
+6 code 
+--------------------
