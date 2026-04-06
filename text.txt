@@ -104,3 +104,8 @@ Create/Update Code - Applied Jobs Page (Real Project) + Fetch User Applications 
 
 6 code 
 --------------------
+Upgrade to Next.js 16.2🔥 Git Push & Auto Deploy to VPS with Coolify
+Commands - npm install next@latest react@latest react-dom@latest
+
+---------
+Create/Update Code - Upgrade to Next.js 16.2 + Commands -: npm install next@latest react@latest react-dom@latest
